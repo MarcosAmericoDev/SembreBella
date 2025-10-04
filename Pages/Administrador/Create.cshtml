@@ -1,0 +1,77 @@
+﻿@page
+@using SempreBella.Model.Enums
+@model SempreBella.Pages.Administrador.CreateModel
+
+@{
+ViewData["Title"] = "Create";
+}
+        
+<h1>Create</h1>
+        
+<h4>Roupa</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <span class="text-danger">*</span>
+                <label asp-for="Roupa.Nome" class="control-label"></label>
+                <input asp-for="Roupa.Nome" class="form-control" />
+                <span asp-validation-for="Roupa.Nome" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <span class="text-danger">*</span>
+                <label asp-for="Roupa.Descricao" class="control-label"></label>
+                <input asp-for="Roupa.Descricao" class="form-control" />
+                <span asp-validation-for="Roupa.Descricao" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <span class="text-danger">*</span>
+                <label asp-for="Roupa.Categoria" class="control-label"></label>
+                <select asp-for="Roupa.Categoria" asp-items="Html.GetEnumSelectList<CategoriaRoupa>()" class="form-control"></select>
+                <span asp-validation-for="Roupa.Categoria" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <span class="text-danger">*</span>
+                <label asp-for="Roupa.Preco" class="control-label"></label>
+                <input asp-for="Roupa.Preco" class="form-control" />
+                <span asp-validation-for="Roupa.Preco" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <span class="text-danger">*</span>
+                <label asp-for="Roupa.Estoque" class="control-label"></label>
+                <input asp-for="Roupa.Estoque" class="form-control" />
+                <span asp-validation-for="Roupa.Estoque" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <span class="text-danger">*</span>
+                <label asp-for="Roupa.ImagemUrl" class="control-label"></label>
+                <input asp-for="Roupa.ImagemUrl" class="form-control" />
+                <span asp-validation-for="Roupa.ImagemUrl" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <span class="text-danger">*</span>
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Roupa.EstaAtiva" /> @Html.DisplayNameFor(model => model.Roupa.EstaAtiva)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="Roupa.Desconto" class="control-label"></label>
+                <input asp-for="Roupa.Desconto" class="form-control" />
+                <span asp-validation-for="Roupa.Desconto" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
