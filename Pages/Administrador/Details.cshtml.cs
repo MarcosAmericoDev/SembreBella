@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using SempreBella.Data;
 using SempreBella.Model;
-using SempreBella.Services;
+using SempreBella.Services.Interfaces;
 
 namespace SempreBella.Pages.Administrador
 {

@@ -1,8 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SempreBella.Data;
 using SempreBella.Model;
+using SempreBella.Services.Interfaces;
 
-namespace SempreBella.Services
+namespace SempreBella.Services.Implementations
 {
     public class RoupaService : IRoupaService
     {

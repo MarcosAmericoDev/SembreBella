@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using SempreBella.Data;
-using SempreBella.Services;
+using SempreBella.Services.Implementations;
+using SempreBella.Services.Interfaces;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace SempreBella
 {
@@ -16,6 +18,16 @@ namespace SempreBella
                     builder.Configuration.GetConnectionString("DefaultConnection")
                 ));
             builder.Services.AddScoped<IRoupaService, RoupaService>();
+            builder.Services.AddScoped<IAuthService, AuthService>();
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.LoginPath = "/Administrador/Login";
+                    options.AccessDeniedPath = "/AcessDenied";
+                });
+
+
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -28,8 +40,11 @@ namespace SempreBella
 
             app.UseHttpsRedirection();
 
+            app.UseStaticFiles();
+
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapStaticAssets();

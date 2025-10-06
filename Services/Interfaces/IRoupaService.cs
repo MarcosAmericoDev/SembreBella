@@ -1,6 +1,6 @@
 ﻿using SempreBella.Model;
 
-namespace SempreBella.Services
+namespace SempreBella.Services.Interfaces
 {
     public interface IRoupaService
     {

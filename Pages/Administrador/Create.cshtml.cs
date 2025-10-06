@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using SempreBella.Data;
 using SempreBella.Model;
 using SempreBella.Model.Enums;
-using SempreBella.Services;
+using SempreBella.Services.Interfaces;
 
 namespace SempreBella.Pages.Administrador
 {
