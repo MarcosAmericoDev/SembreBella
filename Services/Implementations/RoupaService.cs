@@ -1,64 +1,57 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SempreBella.Data;
 using SempreBella.Model;
 using SempreBella.Services.Interfaces;
+using SempreBella.Repositories.Interfaces;
 
 namespace SempreBella.Services.Implementations
 {
     public class RoupaService : IRoupaService
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IRoupaRepository _roupaRepository;
 
-        public RoupaService(ApplicationDbContext context)
+        public RoupaService(IRoupaRepository roupaRepository)
         {
-            _context = context;
+            _roupaRepository = roupaRepository;
         }
 
-        public Task CreateAsync(Roupa roupa)
+        public async Task CreateAsync(Roupa roupa)
         {
-            _context.Roupas.Add(roupa);
-            return _context.SaveChangesAsync();
+            await _roupaRepository.AddAsync(roupa);
+            await _roupaRepository.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(int id)
         {
-            var roupa = await _context.Roupas.FindAsync(id);
+            var roupa = await GetByIdAsync(id);
+
             if(roupa != null)
             {
-                _context.Roupas.Remove(roupa);
-                await _context.SaveChangesAsync();
+                await _roupaRepository.Remove(roupa);
+                await _roupaRepository.SaveChangesAsync();
             }
         }
 
         public async Task<bool> ExistsAsync(int id)
         {
-            return await _context.Roupas.AnyAsync(x => x.Id == id);
+            var count = await _roupaRepository.FindAsync(x => x.Id == id);
+            return count.Any();
         }
 
-        public async Task<List<Roupa>> GetAllAsync()
+        public Task<List<Roupa>> GetAllAsync()
         {
-            return await _context.Roupas.ToListAsync();
+            return _roupaRepository.GetAllAsync();
         }
 
         public async Task<Roupa?> GetByIdAsync(int id)
         {
-            return await _context.Roupas.FirstOrDefaultAsync(m => m.Id == id);
+            var roupasEncontrada = await _roupaRepository.FindAsync(x => x.Id == id);
+            return roupasEncontrada.FirstOrDefault();
         }
 
         public async Task UpdateAsync(Roupa roupa)
         {
-            _context.Attach(roupa).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            } catch (DbUpdateConcurrencyException)
-            {
-                if(!await ExistsAsync(roupa.Id)) {
-                    throw new KeyNotFoundException($"Roua com ID {roupa.Id} não encontrada");
-                }
-                throw;
-            }
+            await _roupaRepository.UpdateAsync(roupa);
+            await _roupaRepository.SaveChangesAsync();
         }
     }
 }

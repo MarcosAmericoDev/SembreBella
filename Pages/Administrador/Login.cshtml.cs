@@ -60,14 +60,11 @@ namespace SempreBella.Pages.Administrador
                 claimsPrincipal,
                 authProperties);
 
-            if (Url.IsLocalUrl(returnURL))
+            if(claimsPrincipal.IsInRole("Administrador"))
             {
-                return Redirect(returnURL);
+                return Url.IsLocalUrl(returnURL) ? Redirect(returnURL!) : RedirectToPage("./Index");
             }
-            else
-            {
-                return RedirectToPage("./Index");
-            }
+            return RedirectToPage("/Index");
         }
     }
 }
