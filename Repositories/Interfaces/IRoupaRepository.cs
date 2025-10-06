@@ -5,5 +5,6 @@ namespace SempreBella.Repositories.Interfaces
     public interface IRoupaRepository : IGenericRepository<Roupa>
     {
         Task<bool> ExistsAsync(int id);
+        Task UpdateAsync(Roupa roupa);
     }
 }

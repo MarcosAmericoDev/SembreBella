@@ -3,6 +3,8 @@ using SempreBella.Data;
 using SempreBella.Services.Implementations;
 using SempreBella.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using SempreBella.Repositories.Interfaces;
+using SempreBella.Repositories.Implementations;
 
 namespace SempreBella
 {
@@ -17,8 +19,12 @@ namespace SempreBella
             builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(
                     builder.Configuration.GetConnectionString("DefaultConnection")
                 ));
+
+            builder.Services.AddScoped<IRoupaRepository, RoupaRepository>();
+
             builder.Services.AddScoped<IRoupaService, RoupaService>();
             builder.Services.AddScoped<IAuthService, AuthService>();
+
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
