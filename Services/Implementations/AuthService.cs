@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SempreBella.Data;
+using SempreBella.Repositories.Interfaces;
 using SempreBella.Services.Interfaces;
 using SempreBella.ViewModels;
 using System.Security.Claims;
@@ -8,17 +9,16 @@ namespace SempreBella.Services.Implementations
 {
     public class AuthService : IAuthService
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IUsuarioRepository _usuarioRepository;
 
-        public AuthService(ApplicationDbContext context)
+        public AuthService(IUsuarioRepository usuarioRepository)
         {
-            _context = context;
+            _usuarioRepository = usuarioRepository;
         }
         
         public async Task<ClaimsPrincipal> AuthenticateUserAsync(LoginInputModel input)
         {
-            var user = await _context.Usuarios.FirstOrDefaultAsync(x => x.Email == input.Email
-            && x.SenhaHash == input.Senha);
+            var user = await _usuarioRepository.GetByEmailAndSenhaAsync(input.Email, input.Senha);
 
             if (user == null)
             {

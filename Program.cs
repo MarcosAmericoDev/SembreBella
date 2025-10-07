@@ -20,9 +20,10 @@ namespace SempreBella
                     builder.Configuration.GetConnectionString("DefaultConnection")
                 ));
 
-            builder.Services.AddScoped<IRoupaRepository, RoupaRepository>();
 
+            builder.Services.AddScoped<IRoupaRepository, RoupaRepository>();
             builder.Services.AddScoped<IRoupaService, RoupaService>();
+            builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
             builder.Services.AddScoped<IAuthService, AuthService>();
 
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
