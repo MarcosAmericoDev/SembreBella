@@ -1,0 +1,74 @@
+﻿@page
+@using SempreBella.ViewModels
+@model SempreBella.Pages.RegisterModel
+
+@{
+    ViewData["Title"] = "Registro de Usuário";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+        <div class="card shadow-lg p-3 mb-5 bg-white rounded">
+            <div class="card-body">
+                <h2 class="card-title text-center text-primary mb-4">Criar Nova Conta</h2>
+
+                @if (!string.IsNullOrEmpty(Model.Message))
+                {
+                    <div class="alert alert-info" role="alert">
+                        @Model.Message
+                    </div>
+                }
+
+                <form method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <!-- Campo de Email -->
+                    <div class="mb-3">
+                        <label asp-for="Input.Email" class="form-label"></label>
+                        <input asp-for="Input.Email" class="form-control" placeholder="seu@email.com" />
+                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                    </div>
+
+                    <!-- Campo de Senha -->
+                    <div class="mb-3">
+                        <label asp-for="Input.Senha" class="form-label"></label>
+                        <input asp-for="Input.Senha" class="form-control" placeholder="Mínimo 6 caracteres" />
+                        <span asp-validation-for="Input.Senha" class="text-danger"></span>
+                    </div>
+
+                    <!-- Campo de Confirmação de Senha -->
+                    <div class="mb-3">
+                        <label asp-for="Input.ConfirmarSenha" class="form-label"></label>
+                        <input asp-for="Input.ConfirmarSenha" class="form-control" />
+                        <span asp-validation-for="Input.ConfirmarSenha" class="text-danger"></span>
+                    </div>
+
+                    <!-- Campo de Papel (Role) -->
+                    <div class="mb-3">
+                        <label asp-for="Input.Papel" class="form-label"></label>
+                        <!-- Usando PapelOptions para popular a lista de seleção -->
+                        <select asp-for="Input.Papel" asp-items="RegisterInputModel.PapelOptions" class="form-select">
+                            <option value="">-- Selecione o Papel --</option>
+                        </select>
+                        <span asp-validation-for="Input.Papel" class="text-danger"></span>
+                    </div>
+
+                    <!-- Botão de Registro -->
+                    <div class="d-grid gap-2 mt-4">
+                        <button type="submit" class="btn btn-primary btn-lg">Registrar</button>
+                    </div>
+
+                    <div class="text-center mt-3">
+                        <a asp-page="/Administrador/Login" class="text-decoration-none">Já tem uma conta? Faça Login</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

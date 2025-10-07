@@ -1,0 +1,58 @@
+﻿@page
+@model SempreBella.Pages.LoginModel
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6 col-lg-4">
+        <div class="card shadow-lg p-4 mb-5 bg-white rounded">
+            <div class="card-body">
+                <h2 class="card-title text-center text-primary mb-4">Acesso à Conta</h2>
+
+                <!-- Exibe mensagem de erro/sucesso (ex: após o registro) -->
+                @if (!string.IsNullOrEmpty(Model.Message))
+                {
+                    <div class="alert alert-info" role="alert">
+                        @Model.Message
+                    </div>
+                }
+
+                <form method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <!-- Campo de Email -->
+                    <div class="mb-3">
+                        <label asp-for="Input.Email" class="form-label"></label>
+                        <input asp-for="Input.Email" class="form-control" placeholder="seu.email@dominio.com" />
+                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                    </div>
+
+                    <!-- Campo de Senha -->
+                    <div class="mb-3">
+                        <label asp-for="Input.Senha" class="form-label"></label>
+                        <input asp-for="Input.Senha" class="form-control" placeholder="Senha" />
+                        <span asp-validation-for="Input.Senha" class="text-danger"></span>
+                    </div>
+
+                    <!-- Botão de Login -->
+                    <div class="d-grid gap-2 mt-4">
+                        <button type="submit" class="btn btn-primary btn-lg">Entrar</button>
+                    </div>
+
+                    <div class="text-center mt-3">
+                        <!-- Referência ao Registro na pasta Pages raiz -->
+                        <a asp-page="/Register" class="text-decoration-none">Ainda não tem conta? Crie aqui.</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
