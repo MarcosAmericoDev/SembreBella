@@ -1,10 +1,92 @@
 ﻿@page
-@model IndexModel
+@model SempreBella.Pages.IndexModel
+
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Início - Sempre Bella";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<!-- Lógica em C# para calcular e formatar o preço com desconto -->
+@{
+    string CalcularPrecoComDesconto(double preco, int? desconto)
+    {
+        if (desconto.HasValue && desconto.Value > 0)
+        {
+            double precoFinal = preco * (1 - (desconto.Value / 100.0));
+            // Formata para moeda Brasileira (R$)
+            return precoFinal.ToString("C2", new System.Globalization.CultureInfo("pt-BR"));
+        }
+        return preco.ToString("C2", new System.Globalization.CultureInfo("pt-BR"));
+    }
+
+    string FormatarPrecoOriginal(double preco)
+    {
+        return preco.ToString("C2", new System.Globalization.CultureInfo("pt-BR"));
+    }
+}
+
+<div class="container my-5">
+    <h1 class="text-center mb-4">Produtos em Destaque</h1>
+
+    <!-- GRID DE PRODUTOS -->
+    <!-- row-cols-* define a responsividade: 1 coluna no mobile, 2 no tablet pequeno, 3 no médio, 4 no desktop -->
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+        @foreach (var item in Model.Roupas)
+        {
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    <!-- 1. Imagem (que é um link) -->
+                    <a href="#">
+                        <img src="@item.ImagemUrl"
+                             class="card-img-top"
+                             alt="@item.Nome"
+                             style="height: 300px; object-fit: cover;"
+                             onerror="this.onerror=null;this.src='https://placehold.co/300x300/CCCCCC/333333?text=SempreBella';" />
+                    </a>
+
+                    <div class="card-body d-flex flex-column">
+                        <!-- 2. Nome do Produto -->
+                        <h5 class="card-title">@item.Nome</h5>
+
+                        <!-- 3. Área de Preços -->
+                        <div class="mt-auto">
+                            @if (item.Desconto.HasValue && item.Desconto.Value > 0)
+                            {
+                                <!-- Preço Original Riscado e Desconto -->
+                                <p class="card-text text-muted mb-0">
+                                    <span class="text-decoration-line-through me-2">
+                                        @FormatarPrecoOriginal(item.Preco)
+                                    </span>
+                                    <span class="badge bg-danger">@item.Desconto.Value% OFF</span>
+                                </p>
+                                <!-- Preço Após Desconto (Preço Final) -->
+                                <p class="card-text fs-4 text-success fw-bold">
+                                    @CalcularPrecoComDesconto(item.Preco, item.Desconto)
+                                </p>
+                            }
+                            else
+                            {
+                                <!-- Preço Normal -->
+                                <p class="card-text fs-5 text-dark fw-bold">
+                                    @FormatarPrecoOriginal(item.Preco)
+                                </p>
+                            }
+                        </div>
+                    </div>
+
+                    <!-- Botão de Comprar (Exemplo) -->
+                    <div class="card-footer bg-white border-0">
+                        <a asp-page="" class="btn btn-primary w-100">Adicionar ao Carrinho</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <!-- Mensagem caso não haja produtos -->
+    @if (!Model.Roupas.Any())
+    {
+        <div class="alert alert-info text-center mt-5" role="alert">
+            Nenhum produto disponível para visualização no momento.
+        </div>
+    }
 </div>
