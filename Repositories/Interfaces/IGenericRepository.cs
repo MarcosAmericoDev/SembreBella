@@ -6,7 +6,7 @@ namespace SempreBella.Repositories.Interfaces
     {
         Task<T?> GetByIdAsync(int id);
         Task<List<T>> GetAllAsync();
-        Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> expression);
+        Task<List<T>> FindAsync(Expression<Func<T, bool>> expression);
         Task AddAsync(T entity);
         Task Remove (T entity);
         Task<int> SaveChangesAsync();

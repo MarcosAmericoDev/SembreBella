@@ -19,9 +19,7 @@ namespace SempreBella.Pages
 
         public async Task OnGet()
         {
-            var todasAsRoupas = await _roupaService.GetAllAsync();
-
-            Roupas = todasAsRoupas.Where(r => r.EstaAtiva == true).ToList();
+            Roupas = await _roupaService.GetAllAtivasAsync();
         }
     }
 }

@@ -7,7 +7,7 @@ namespace SempreBella.Services.Implementations
 {
     public class RoupaService : IRoupaService
     {
-        private readonly IRoupaRepository _roupaRepository;
+        private readonly IRoupaRepository _roupaRepository = default!;
 
         public RoupaService(IRoupaRepository roupaRepository)
         {
@@ -51,7 +51,11 @@ namespace SempreBella.Services.Implementations
         public async Task UpdateAsync(Roupa roupa)
         {
             await _roupaRepository.UpdateAsync(roupa);
-            await _roupaRepository.SaveChangesAsync();
+        }
+
+        public async Task<List<Roupa>> GetAllAtivasAsync()
+        {
+            return await _roupaRepository.FindAsync(x => x.EstaAtiva == true);
         }
     }
 }
