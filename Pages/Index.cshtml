@@ -5,24 +5,6 @@
     ViewData["Title"] = "Início - Sempre Bella";
 }
 
-<!-- Lógica em C# para calcular e formatar o preço com desconto -->
-@{
-    string CalcularPrecoComDesconto(double preco, int? desconto)
-    {
-        if (desconto.HasValue && desconto.Value > 0)
-        {
-            double precoFinal = preco * (1 - (desconto.Value / 100.0));
-            // Formata para moeda Brasileira (R$)
-            return precoFinal.ToString("C2", new System.Globalization.CultureInfo("pt-BR"));
-        }
-        return preco.ToString("C2", new System.Globalization.CultureInfo("pt-BR"));
-    }
-
-    string FormatarPrecoOriginal(double preco)
-    {
-        return preco.ToString("C2", new System.Globalization.CultureInfo("pt-BR"));
-    }
-}
 <style>
     .floating-btn {
         position: fixed;
@@ -69,20 +51,20 @@
                                 <!-- Preço Original Riscado e Desconto -->
                                 <p class="card-text text-muted mb-0">
                                     <span class="text-decoration-line-through me-2">
-                                        @FormatarPrecoOriginal(item.Preco)
+                                        @item.PrecoOriginalFormatado
                                     </span>
                                     <span class="badge bg-danger">@item.Desconto.Value% OFF</span>
                                 </p>
                                 <!-- Preço Após Desconto (Preço Final) -->
                                 <p class="card-text fs-4 text-success fw-bold">
-                                    @CalcularPrecoComDesconto(item.Preco, item.Desconto)
+                                    @item.PrecoFinalFormatado
                                 </p>
                             }
                             else
                             {
                                 <!-- Preço Normal -->
                                 <p class="card-text fs-5 text-dark fw-bold">
-                                    @FormatarPrecoOriginal(item.Preco)
+                                    @item.PrecoOriginalFormatado
                                 </p>
                             }
                         </div>

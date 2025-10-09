@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Razor.Language;
 using SempreBella.Model;
 using SempreBella.Services.Interfaces;
+using SempreBella.ViewModels;
 using System.Threading.Tasks;
 
 namespace SempreBella.Pages
@@ -15,7 +17,7 @@ namespace SempreBella.Pages
             _roupaService = roupaService;
         }
 
-        public IList<Roupa> Roupas { get; set; } = new List<Roupa>();
+        public IList<RoupaExibicaoDTO> Roupas { get; set; } = new List<RoupaExibicaoDTO>();
 
         public async Task OnGet()
         {

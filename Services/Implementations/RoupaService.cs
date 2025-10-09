@@ -2,12 +2,15 @@
 using SempreBella.Model;
 using SempreBella.Services.Interfaces;
 using SempreBella.Repositories.Interfaces;
+using System.Globalization;
+using SempreBella.ViewModels;
 
 namespace SempreBella.Services.Implementations
 {
     public class RoupaService : IRoupaService
     {
         private readonly IRoupaRepository _roupaRepository = default!;
+        private readonly CultureInfo _culture = new CultureInfo("pt-BR");
 
         public RoupaService(IRoupaRepository roupaRepository)
         {
@@ -42,6 +45,39 @@ namespace SempreBella.Services.Implementations
             return _roupaRepository.GetAllAsync();
         }
 
+        private RoupaExibicaoDTO MapToDTO(Roupa roupa)
+        {
+            string precoOriginalFormatado = roupa.Preco.ToString("C2", _culture);
+            double precoFinal = roupa.Preco;
+
+            if (roupa.Desconto.HasValue && roupa.Desconto.Value > 0)
+            {
+                precoFinal = roupa.Preco * (1 - (roupa.Desconto.Value / 100.0));
+            }
+            string precoFinalFormatado = precoFinal.ToString("C2", _culture);
+
+            return new RoupaExibicaoDTO
+            {
+                Id = roupa.Id,
+                Nome = roupa.Nome,
+                Categoria = roupa.Categoria,
+                Estoque = roupa.Estoque,
+                ImagemUrl = roupa.ImagemUrl,
+                EstaAtiva = roupa.EstaAtiva,
+
+                PrecoOriginalFormatado = precoOriginalFormatado,
+                Desconto = roupa.Desconto,
+                PrecoFinalFormatado = precoFinalFormatado
+            };
+        }
+
+        public async Task<List<RoupaExibicaoDTO>> GetAllAtivasAsync()
+        {
+            var roupas = await _roupaRepository.FindAsync(x => x.EstaAtiva == true);
+
+            return roupas.Select(MapToDTO).ToList();
+        }
+
         public async Task<Roupa?> GetByIdAsync(int id)
         {
             var roupasEncontrada = await _roupaRepository.FindAsync(x => x.Id == id);
@@ -53,9 +89,6 @@ namespace SempreBella.Services.Implementations
             await _roupaRepository.UpdateAsync(roupa);
         }
 
-        public async Task<List<Roupa>> GetAllAtivasAsync()
-        {
-            return await _roupaRepository.FindAsync(x => x.EstaAtiva == true);
-        }
+
     }
 }
