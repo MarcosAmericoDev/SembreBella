@@ -23,6 +23,21 @@
         return preco.ToString("C2", new System.Globalization.CultureInfo("pt-BR"));
     }
 }
+<style>
+    .floating-btn {
+        position: fixed;
+        bottom: 50px;
+        right: 50px;
+        background-color: #ff8fab;
+        color: black;
+        padding: 10px 35px 10px 30px;
+    }
+    .floating-btn:hover {
+            background-color: #F5BABB;
+            color: black;
+    }
+</style>
+
 
 <div class="container my-5">
     <h1 class="text-center mb-4">Produtos em Destaque</h1>
@@ -75,7 +90,7 @@
 
                     <!-- Botão de Comprar (Exemplo) -->
                     <div class="card-footer bg-white border-0">
-                        <a asp-page="" class="btn btn-primary w-100">Adicionar ao Carrinho</a>
+                        <a asp-page="" class="btn btn-primary w-100 border-black" style="background-color: #ff8fab; color: black;">Adicionar ao Carrinho</a>
                     </div>
                 </div>
             </div>
@@ -89,4 +104,8 @@
             Nenhum produto disponível para visualização no momento.
         </div>
     }
+
+    <a asp-page="" class="btn btn-primary floating-btn border-black">
+        <i class="bi bi-cart"></i> Carrinho
+    </a>
 </div>
