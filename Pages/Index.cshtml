@@ -1,6 +1,6 @@
 ﻿@page
 @model SempreBella.Pages.IndexModel
-
+@using System.Globalization;
 @{
     ViewData["Title"] = "Início - Sempre Bella";
 }
@@ -75,11 +75,11 @@
                     <button class="btn btn-primary w-100 border-black"
                             style="background-color: #ff8fab; color: black;"
                             onclick="addToCart({
-                                                id: @item.Id,
-                                                name: '@item.Nome',
-                                                price: '@item.PrecoNumerico',
-                                                image: '@item.ImagemUrl'
-                                                })">
+                                id: @item.Id,
+                                name: '@item.Nome',
+                                price: @item.PrecoNumerico.ToString(CultureInfo.InvariantCulture),
+                                image: '@item.ImagemUrl'
+                            })">
                         Adicionar ao Carrinho
                     </button>
 
@@ -96,8 +96,17 @@
         </div>
     }
 
-    <a class="btn btn-primary floating-btn border-black" data-bs-toggle="modal" data-bs-target="#cartModal" onclick="renderCart()">
-        <i class="bi bi-cart"></i> Carrinho
+    <a id="cart-button"
+       class="btn btn-primary floating-btn border-black position-fixed"
+       data-bs-toggle="modal"
+       data-bs-target="#cartModal"
+       onclick="renderCart()">
+        <i class="bi bi-cart"></i>
+        Carrinho
+        <span id="cart-count"
+              class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark">
+            0
+        </span>
     </a>
 
     <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
