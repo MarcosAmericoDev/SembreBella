@@ -14,10 +14,11 @@
         color: black;
         padding: 10px 35px 10px 30px;
     }
-    .floating-btn:hover {
+
+        .floating-btn:hover {
             background-color: #F5BABB;
             color: black;
-    }
+        }
 </style>
 
 
@@ -71,9 +72,17 @@
                     </div>
 
                     <!-- Botão de Comprar (Exemplo) -->
-                    <div class="card-footer bg-white border-0">
-                        <a asp-page="" class="btn btn-primary w-100 border-black" style="background-color: #ff8fab; color: black;">Adicionar ao Carrinho</a>
-                    </div>
+                    <button class="btn btn-primary w-100 border-black"
+                            style="background-color: #ff8fab; color: black;"
+                            onclick="addToCart({
+                                                id: @item.Id,
+                                                name: '@item.Nome',
+                                                price: '@item.PrecoNumerico',
+                                                image: '@item.ImagemUrl'
+                                                })">
+                        Adicionar ao Carrinho
+                    </button>
+
                 </div>
             </div>
         }
@@ -87,7 +96,27 @@
         </div>
     }
 
-    <a asp-page="" class="btn btn-primary floating-btn border-black">
+    <a class="btn btn-primary floating-btn border-black" data-bs-toggle="modal" data-bs-target="#cartModal" onclick="renderCart()">
         <i class="bi bi-cart"></i> Carrinho
     </a>
+
+    <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content" style="border-radius: 20px;">
+                <div class="modal-header">
+                    <h5 class="modal-title">🛍️ Seu Carrinho</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="cart-items"></div>
+                </div>
+                <div class="modal-footer d-flex justify-content-between">
+                    <strong>Total: <span id="cart-total">R$0,00</span></strong>
+                    <button class="btn btn-success" onclick="window.location.href='https://wa.me/SEUNUMERO?text=Pedido%20SempreBella'">
+                        Finalizar Pedido <i class="bi bi-whatsapp"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

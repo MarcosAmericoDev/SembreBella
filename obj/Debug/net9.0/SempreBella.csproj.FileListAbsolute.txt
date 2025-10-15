@@ -336,3 +336,4 @@ C:\Users\marco\source\repos\SempreBella\obj\Debug\net9.0\SempreBella.pdb
 C:\Users\marco\source\repos\SempreBella\obj\Debug\net9.0\SempreBella.genruntimeconfig.cache
 C:\Users\marco\source\repos\SempreBella\obj\Debug\net9.0\ref\SempreBella.dll
 C:\Users\marco\source\repos\SempreBella\obj\Debug\net9.0\SempreBella.sourcelink.json
+C:\Users\marco\source\repos\SempreBella\obj\Debug\net9.0\compressed\59xwx0g74c-qo8ws2hbrx.gz

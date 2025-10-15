@@ -64,7 +64,9 @@ namespace SempreBella.Services.Implementations
                 Estoque = roupa.Estoque,
                 ImagemUrl = roupa.ImagemUrl,
                 EstaAtiva = roupa.EstaAtiva,
-
+                PrecoNumerico = roupa.Desconto.HasValue
+                    ? (decimal)roupa.Preco * (1 - (roupa.Desconto.Value / 100m))
+                    : (decimal)roupa.Preco,
                 PrecoOriginalFormatado = precoOriginalFormatado,
                 Desconto = roupa.Desconto,
                 PrecoFinalFormatado = precoFinalFormatado
