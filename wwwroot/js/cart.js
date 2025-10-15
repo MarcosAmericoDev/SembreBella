@@ -69,7 +69,13 @@ function updateQuantity(productId, delta) {
     let item = cart.find(p => p.id === productId);
     if (!item) return;
 
-    item.quantity = Math.max(1, item.quantity + delta);
+    item.quantity += delta;
+
+    // 🗑️ Se a quantidade chegou a 0 ou menos, remove o item
+    if (item.quantity <= 0) {
+        cart = cart.filter(p => p.id !== productId);
+    }
+
     saveCart(cart);
     renderCart();
 }
