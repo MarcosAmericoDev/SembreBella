@@ -12,5 +12,7 @@ namespace SempreBella.Data
         }
         public DbSet<Roupa> Roupas { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
+        public DbSet<Pedido> Pedidos { get; set; }
+        public DbSet<ItemPedido> ItensPedido { get; set; }
     }
 }
