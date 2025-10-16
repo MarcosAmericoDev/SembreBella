@@ -133,5 +133,58 @@ function renderCart() {
     totalSpan.innerText = "R$" + total.toFixed(2);
 }
 
+// ======= Função para montar mensagem e abrir WhatsApp =======
+document.addEventListener("DOMContentLoaded", () => {
+    const btnFinalizar = document.getElementById("btn-finalizar");
+    if (!btnFinalizar) return;
+
+    btnFinalizar.addEventListener("click", () => {
+        const cart = getCart();
+        if (cart.length === 0) {
+            alert("Seu carrinho está vazio!");
+            return;
+        }
+
+        // Pega dados do formulário
+        const nome = document.getElementById("nome").value.trim();
+        const telefone = document.getElementById("telefone").value.trim();
+        const estado = document.getElementById("estado").value.trim();
+        const cidade = document.getElementById("cidade").value.trim();
+        const rua = document.getElementById("rua").value.trim();
+        const numero = document.getElementById("numero").value.trim();
+        const complemento = document.getElementById("complemento").value.trim();
+
+        if (!nome || !telefone || !estado || !cidade || !rua || !numero) {
+            alert("Por favor, preencha todos os campos obrigatórios antes de finalizar o pedido.");
+            return;
+        }
+
+        // Monta mensagem do pedido
+        let mensagem = `*🛍️ Pedido SempreBella*\n\n`;
+        mensagem += `👤 *Cliente:* ${nome}\n📞 *Telefone:* ${telefone}\n📍 *Endereço:* ${rua}, ${numero}`;
+        if (complemento) mensagem += ` - ${complemento}`;
+        mensagem += `\n🏙️ *Cidade:* ${cidade} - ${estado}\n\n`;
+        mensagem += `*Itens do Pedido:*\n`;
+
+        let total = 0;
+        cart.forEach(item => {
+            const subtotal = item.price * item.quantity;
+            total += subtotal;
+            mensagem += `• ${item.name}  (x${item.quantity}) — R$${subtotal.toFixed(2)}\n`;
+        });
+
+        mensagem += `\n💰 *Total:* R$${total.toFixed(2)}\n\n`;
+        mensagem += `✅ Obrigado por comprar com a *SempreBella*! ❤️`;
+
+        // Número do WhatsApp da loja (coloque o seu aqui)
+        const numeroLoja = "5585921512835"; // <-- Substitua pelo seu número com DDI (55 + DDD + número)
+        const url = `https://wa.me/${numeroLoja}?text=${encodeURIComponent(mensagem)}`;
+
+        // Abre o WhatsApp
+        window.open(url, "_blank");
+    });
+});
+
+
 // ======= Inicialização =======
 document.addEventListener("DOMContentLoaded", updateCartCount);
