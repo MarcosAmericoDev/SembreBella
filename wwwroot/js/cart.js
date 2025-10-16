@@ -133,12 +133,12 @@ function renderCart() {
     totalSpan.innerText = "R$" + total.toFixed(2);
 }
 
-// ======= Função para montar mensagem e abrir WhatsApp =======
+// ======= Função para montar mensagem, salvar pedido e abrir WhatsApp =======
 document.addEventListener("DOMContentLoaded", () => {
     const btnFinalizar = document.getElementById("btn-finalizar");
     if (!btnFinalizar) return;
 
-    btnFinalizar.addEventListener("click", () => {
+    btnFinalizar.addEventListener("click", async () => {
         const cart = getCart();
         if (cart.length === 0) {
             alert("Seu carrinho está vazio!");
@@ -159,29 +159,71 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        // Monta mensagem do pedido
-        let mensagem = `*🛍️ Pedido SempreBella*\n\n`;
-        mensagem += `👤 *Cliente:* ${nome}\n📞 *Telefone:* ${telefone}\n📍 *Endereço:* ${rua}, ${numero}`;
-        if (complemento) mensagem += ` - ${complemento}`;
-        mensagem += `\n🏙️ *Cidade:* ${cidade} - ${estado}\n\n`;
-        mensagem += `*Itens do Pedido:*\n`;
-
+        // Calcula total
         let total = 0;
-        cart.forEach(item => {
-            const subtotal = item.price * item.quantity;
-            total += subtotal;
-            mensagem += `• ${item.name}  (x${item.quantity}) — R$${subtotal.toFixed(2)}\n`;
-        });
+        cart.forEach(item => total += item.price * item.quantity);
 
-        mensagem += `\n💰 *Total:* R$${total.toFixed(2)}\n\n`;
-        mensagem += `✅ Obrigado por comprar com a *SempreBella*! ❤️`;
+        // Monta objeto de pedido para enviar ao backend
+        const pedido = {
+            nomeCliente: nome,
+            telefone: telefone,
+            estado: estado,
+            cidade: cidade,
+            rua: rua,
+            numero: numero,
+            complemento: complemento,
+            valorTotal: total,
+            Itens: cart.map(item => ({
+                roupaId: item.id,
+                nomeProduto: item.name,
+                quantidade: item.quantity,
+                precoUnitario: item.price
+            }))
+        };
 
-        // Número do WhatsApp da loja (coloque o seu aqui)
-        const numeroLoja = "5585921512835"; // <-- Substitua pelo seu número com DDI (55 + DDD + número)
-        const url = `https://wa.me/${numeroLoja}?text=${encodeURIComponent(mensagem)}`;
+        try {
+            // 🔹 Envia o pedido pro backend
+            const response = await fetch(`${window.location.origin}/Api/SalvarPedido`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(pedido)
+            });
 
-        // Abre o WhatsApp
-        window.open(url, "_blank");
+
+            if (!response.ok) {
+                alert("Erro ao salvar o pedido. Tente novamente.");
+                return;
+            }
+
+            // 🔹 Monta mensagem do WhatsApp
+            let mensagem = `*🛍️ Pedido SempreBella*\n\n`;
+            mensagem += `👤 *Cliente:* ${nome}\n📞 *Telefone:* ${telefone}\n📍 *Endereço:* ${rua}, ${numero}`;
+            if (complemento) mensagem += ` - ${complemento}`;
+            mensagem += `\n🏙️ *Cidade:* ${cidade} - ${estado}\n\n`;
+            mensagem += `*Itens do Pedido:*\n`;
+
+            cart.forEach(item => {
+                const subtotal = item.price * item.quantity;
+                mensagem += `• ${item.name} (x${item.quantity}) — R$${subtotal.toFixed(2)}\n`;
+            });
+
+            mensagem += `\n💰 *Total:* R$${total.toFixed(2)}\n\n`;
+            mensagem += `✅ Obrigado por comprar com a *SempreBella*! ❤️`;
+
+            // 🔹 Número do WhatsApp da loja
+            const numeroLoja = "5585987654321"; // <---- Substitua pelo seu número real
+            const url = `https://wa.me/${numeroLoja}?text=${encodeURIComponent(mensagem)}`;
+
+            // 🔹 Limpa o carrinho e abre o WhatsApp
+            localStorage.removeItem("cart");
+            updateCartCount();
+            renderCart();
+            window.open(url, "_blank");
+
+        } catch (error) {
+            console.error(error);
+            alert("Ocorreu um erro ao processar o pedido.");
+        }
     });
 });
 

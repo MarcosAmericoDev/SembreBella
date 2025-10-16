@@ -26,7 +26,7 @@ namespace SempreBella.Model
         public decimal ValorTotal { get; set; }
         public DateTime DataPedido { get; set; } = DateTime.Now;
 
-        public ICollection<ItemPedido> Items { get; set; } = new List<ItemPedido>();
+        public ICollection<ItemPedido> Itens { get; set; } = new List<ItemPedido>();
     }
 
     public class ItemPedido
