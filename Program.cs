@@ -28,6 +28,8 @@ namespace SempreBella
             builder.Services.AddScoped<IPedidoRepository, PedidoRepository>();
             builder.Services.AddScoped<IPedidoService, PedidoService>();
             builder.Services.AddScoped<ITendenciasService, TendenciasService>();
+            builder.Services.AddScoped<IHistoricoPedidoService, HistoricoPedidoService>();
+
 
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>

@@ -1,4 +1,5 @@
 ﻿using SempreBella.Model;
+using SempreBella.ViewModels;
 
 namespace SempreBella.Services.Interfaces
 {

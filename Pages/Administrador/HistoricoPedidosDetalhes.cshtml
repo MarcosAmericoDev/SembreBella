@@ -1,0 +1,35 @@
+﻿@page "{id:int}"
+@model SempreBella.Pages.Administrador.HistoricoPedidosDetalhesModel
+
+<h2>Detalhes do Pedido #@Model.Pedido.Id</h2>
+<hr />
+
+<p><strong>Cliente:</strong> @Model.Pedido.NomeCliente</p>
+<p><strong>Telefone:</strong> @Model.Pedido.Telefone</p>
+<p><strong>Data:</strong> @Model.Pedido.DataPedido.ToString("dd/MM/yyyy HH:mm")</p>
+<p><strong>Total:</strong> R$ @Model.Pedido.Total</p>
+
+<h4>Itens</h4>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Produto</th>
+            <th>Qtd</th>
+            <th>Preço</th>
+            <th>Subtotal</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Pedido.Itens)
+        {
+            <tr>
+                <td>@item.NomeProduto</td>
+                <td>@item.Quantidade</td>
+                <td>@item.PrecoUnitario</td>
+                <td>@(item.PrecoUnitario* item.Quantidade)</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-page="HistoricoPedidos" class="btn btn-secondary">Voltar</a>

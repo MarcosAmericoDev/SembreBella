@@ -1,0 +1,42 @@
+﻿@page
+@model SempreBella.Pages.Administrador.HistoricoPedidosModel
+
+<h2>📜 Histórico de Pedidos</h2>
+<hr />
+
+@if (Model.Pedidos.Count == 0)
+{
+    <div class="alert alert-info">Nenhum pedido encontrado.</div>
+}
+else
+{
+    <table class="table table-striped shadow-sm">
+        <thead>
+            <tr>
+                <th>Pedido</th>
+                <th>Cliente</th>
+                <th>Telefone</th>
+                <th>Data</th>
+                <th>Total</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var p in Model.Pedidos)
+            {
+                <tr>
+                    <td>#@p.Id</td>
+                    <td>@p.NomeCliente</td>
+                    <td>@p.Telefone</td>
+                    <td>@p.DataPedido.ToString("dd/MM/yyyy HH:mm")</td>
+                    <td>R$ @p.Total</td>
+                    <td>
+                        <a asp-page="HistoricoPedidosDetalhes" asp-route-id="@p.Id" class="btn btn-sm btn-primary">
+                            Ver Detalhes
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

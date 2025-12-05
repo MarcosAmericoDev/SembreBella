@@ -19,39 +19,45 @@ namespace SempreBella.Services.Implementations
             DateTime periodoAtual = hoje.AddDays(-30);
             DateTime periodoAnterior = hoje.AddDays(-60);
 
+            var roupasAtivas = await _context.Roupas
+                .Where(r => r.EstaAtiva == true)
+                .ToDictionaryAsync(r => r.Id, r => r);
+
             var itens = await _context.ItensPedido
                 .Include(i => i.Pedido)
                 .ToListAsync();
 
-            // vendas no mês atual por categoria
+            itens = itens.Where(i => roupasAtivas.ContainsKey(i.RoupaId)).ToList();
+
             var atual = itens
                 .Where(i => i.Pedido.DataPedido >= periodoAtual)
                 .GroupBy(i => i.NomeProduto)
-                .Select(g => new { Produto = g.Key, Total = g.Sum(i => i.Quantidade) })
+                .Select(g => new { Nome = g.Key, Total = g.Sum(x => x.Quantidade) })
                 .ToList();
 
-            // vendas do mês anterior por categoria
+
+            // Mês anterior
             var anterior = itens
                 .Where(i => i.Pedido.DataPedido >= periodoAnterior && i.Pedido.DataPedido < periodoAtual)
                 .GroupBy(i => i.NomeProduto)
-                .Select(g => new { Produto = g.Key, Total = g.Sum(i => i.Quantidade) })
+                .Select(g => new { Nome = g.Key, Total = g.Sum(x => x.Quantidade) })
                 .ToList();
 
-            var tendencias = new List<TendenciaDTO>();
+            List<TendenciaDTO> tendencias = new();
 
             foreach (var a in atual)
             {
-                var prev = anterior.FirstOrDefault(p => p.Produto == a.Produto)?.Total ?? 0;
+                var prev = anterior.FirstOrDefault(p => p.Nome == a.Nome)?.Total ?? 0;
 
                 if (prev == 0) continue;
 
                 double variacao = ((double)a.Total - prev) / prev * 100;
 
-                if (Math.Abs(variacao) >= 5) // só adiciona se relevante
+                if (Math.Abs(variacao) >= 5)
                 {
                     tendencias.Add(new TendenciaDTO
                     {
-                        Titulo = a.Produto,
+                        Titulo = a.Nome,
                         VariacaoPercentual = Math.Round(variacao, 1)
                     });
                 }
