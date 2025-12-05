@@ -1,0 +1,19 @@
+﻿@page
+@model SempreBella.Pages.Administrador.RelatoriosModel
+@{
+}
+
+<div class="card p-3">
+    <h3>Tópicos Notáveis</h3>
+
+    @foreach (var t in Model.Tendencias)
+    {
+        <div class="d-flex justify-content-between align-items-center my-2">
+            <span>@t.Titulo</span>
+            <span class="badge @(t.EPositiva ? "bg-success" : "bg-danger")">
+                @(t.EPositiva ? "+" : "")@t.VariacaoPercentual%
+            </span>
+        </div>
+    }
+</div>
+
